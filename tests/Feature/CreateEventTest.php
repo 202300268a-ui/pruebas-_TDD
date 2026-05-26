@@ -8,13 +8,23 @@ use Tests\TestCase;
 
 class CreateEventTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
+    
+    use RefreshDatabase;
+    public function test_an_event_can_be_created(): void
     {
-        $response = $this->get('/');
+        //arranque
+        $eventData =[
+            'name'=> 'Conferencia de Youdevs',
+            'featured'=>'meme.png',
+            'date'=> Carbon::now(),
+            'time'=> '12:00:00',
+            'location'=>'El Santiago',
+        ];
+        //act
+         $response=$this->post('/events',$eventData);
+        //asert
+        $response->assertStatus(302);
+        $this-> assertDatabaseHas('events',$eventData);
 
-        $response->assertStatus(200);
     }
 }
