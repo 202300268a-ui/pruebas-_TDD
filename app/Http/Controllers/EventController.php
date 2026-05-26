@@ -25,4 +25,34 @@ class EventController extends Controller
 
         return redirect()->route('events.index'); 
     }
+    
+
+public function update(\Illuminate\Http\Request $request, Event $event): \Illuminate\Http\JsonResponse
+{
+    $updateData = $request->validate([
+        'name' => 'required|string|max:60',
+        'featured' => 'required|string|max:50',
+        'date' => 'required|date',
+        'time' => 'required|date_format:H:i:s',
+        'location' => 'required|string|max:60',
+    ]);
+
+    $event->update($updateData);
+
+    
+    return response()->json($event, 200);
 }
+
+public function destroy(Event $event)
+{
+    
+
+    $event->delete();
+
+    
+    return response()->noContent();
+}
+
+
+}
+
